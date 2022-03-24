@@ -1,0 +1,38 @@
+%{
+   #include "scan.h"
+%}
+
+
+%name parse
+%token OP_MULT OP_MINUS OP_DIV OP_DBLMULT OP_PLUS
+%token OP_COMMA OP_OP OP_CP COMMENT VALUE IDENTIFIER
+%token KW_AND KW_OR KW_NOT KW_EQUAL KW_LESS KW_FOR KW_IF
+%token KW_APPEND KW_CONCAT KW_SET KW_DEFFUN KW_NILL KW_LIST
+%token KW_EXIT KW_LOAD KW_DISP KW_TRUE KW_FALSE
+%start START
+
+%%
+START : INPUT {;} //DO NOTHING 
+
+INPUT : 
+	EXPI {;}
+EXPI : 
+	  OP_OP OPERATORS EXPI VALUE OP_CP {;}
+          	
+
+LISTVALUE :   
+	  OP_OP KW_LIST VALUES OP_CP {;}
+        | OP_OP VALUES OP_CP   {;}
+	| KW_NILL		{;}
+
+VALUES :   VALUES VALUE {;}
+	 | VALUE  {;}
+	 | KW_NILL {;}
+
+
+OPERATORS : OP_PLUS{;} | OP_MINUS{;} | OP_MULT{;} | OP_DIV{;}
+%%
+
+int yywrap(){
+	return 1;
+} 
